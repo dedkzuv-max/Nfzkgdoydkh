@@ -20,7 +20,7 @@ async def main():
         except Exception as e:
             print("Ошибка:", e)
 
-        await asyncio.sleep(30)  # каждые 30 сек
+        await asyncio.sleep(30)
 
 with client:
-    client.loop.run_until_complete(main())х
+    client.loop.run_until_complete(main())
