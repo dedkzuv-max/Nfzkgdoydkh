@@ -1,26 +1,52 @@
-from telethon import TelegramClient
 import asyncio
+from aiogram import Bot, Dispatcher
+from aiogram.filters import CommandStart
+from aiogram.types import (
+    Message,
+    ReplyKeyboardMarkup,
+    KeyboardButton
+)
 
-api_id = 35871770
-api_hash = '96b84d95e540efdc58bb59a5b779a7aa'
+TOKEN = "8799385592:AAEsPJ6vMXx0P5Eq_iSqXcUlyCvvW0szJwA"
 
-group = 'https://t.me/Referaly2'
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
 
-message_text = """• Вз лс, бан - реакция
-(Много спонсоров не делаю)
-(Скам - @tylerd64 @Ihorco @Ludmillaf1)"""
+# КНОПКИ КАК НА ФОТО
+menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="🌲 Купить Stars"),
+            KeyboardButton(text="🌿 Рефералы")
+        ],
+        [
+            KeyboardButton(text="🧮 Калькулятор"),
+            KeyboardButton(text="✉️ Поддержка")
+        ],
+        [
+            KeyboardButton(text="💬 Отзывы")
+        ]
+    ],
+    resize_keyboard=True
+)
 
-client = TelegramClient('session', api_id, api_hash)
+# START
+@dp.message(CommandStart())
+async def start(message: Message):
+    await message.answer_video(
+        video="https://files.catbox.moe/7l6kz1.mp4",  # сюда своё видео
+        caption=(
+            "🌲👋 Добро пожаловать в Kuki Stars!\n\n"
+            "Самые дешевые звезды 💸\n"
+            "Покупка от 50 ⭐"
+        ),
+        reply_markup=menu
+    )
 
+# ЗАПУСК
 async def main():
-    while True:
-        try:
-            await client.send_message(group, message_text)
-            print("Отправлено")
-        except Exception as e:
-            print("Ошибка:", e)
+    print("Бот запущен")
+    await dp.start_polling(bot)
 
-        await asyncio.sleep(30)
-
-with client:
-    client.loop.run_until_complete(main())
+if __name__ == "__main__":
+    asyncio.run(main())
